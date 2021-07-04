@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Candy Shop';
+    src: url('CandyShop.eot');
+    src: local('Candy Shop'), local('CandyShop'),
+        url('CandyShop.eot?#iefix') format('embedded-opentype'),
+        url('CandyShop.woff2') format('woff2'),
+        url('CandyShop.woff') format('woff'),
+        url('CandyShop.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+

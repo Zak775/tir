@@ -1,0 +1,695 @@
+/* Шрифт используемый в игре*/
+
+@font-face {
+    font-family: "Candy Shop";
+    src: url("../fonts/CandyShop.eot");
+    src: local("../fonts/Candy Shop"), local("../fonts/Candy Shop"), url("../fonts/CandyShop.eot?#iefix") format("embedded-opentype"), url("../fonts/CandyShop.woff2") format("woff2"), url("../fonts/CandyShop.woff") format("woff"), url("../fonts/CandyShop.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* Внешние и внутрение отступы для всего документа */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Стили наследуемые всеми элементами */
+
+body {
+    font-family: "Candy Shop";
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 1.5em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: center;
+    -webkit-user-select: none;
+    /* Убираем возможность выделения текста */
+    padding-top: 5px;
+}
+
+
+/*Игровое поле Playground*/
+
+#playground {
+    width: 1200px;
+    height: 650px;
+    position: relative;
+    background-image: url(../image/background-game.jpg);
+}
+
+
+/* Блок игры */
+
+#game-block {
+    width: 1200px;
+    height: 650px;
+    background-color: rgba(115, 84, 84, 0.6);
+    overflow: hidden;
+    margin: 0px auto;
+    cursor: url("../image/aim_red_32x32.png") 16 16, pointer;
+    /* Добавил курсор */
+}
+
+
+/* Экран окончания игры */
+
+#end-game {
+    width: 1200px;
+    height: 650px;
+    position: relative;
+    border: 2px solid grey;
+    overflow: hidden;
+    background-size: 1200px 650px;
+    background-image: url(../image/end.jpg);
+    align-items: center;
+}
+
+
+/* Блок с текстом и кнопками */
+
+#end-menu-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    align-items: center;
+}
+
+
+/* Блок с текстом */
+
+#end-game-content {
+    font-family: "Candy Shop";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 46px;
+    letter-spacing: 0.05em;
+    color: #774b18;
+}
+
+
+/* Стиль мишени после выстрела */
+
+.die {
+    transform: rotateX(89deg);
+}
+
+/* Стиль мишени по классу */
+
+.target {
+    width: 140px;
+    height: 280px;
+    background: url(../image/tir0.png) center bottom/110px auto no-repeat;
+    position: absolute;
+    top: 345px;
+    left: 165px;
+    transform-origin: 50% bottom;
+    transition: 1s;
+    display: block;
+}
+
+/*Стили облака*/
+
+.cloud {
+    width: 45%;
+    height: 45%;
+    position: absolute;
+    background-repeat: no-repeat;
+    top: -40px;
+    left: -100px;
+    display: block;
+    background-size: 450px auto;
+    opacity: 1;
+}
+
+.target-cloud {
+    width: 37%;
+    height: 32%;
+    position: absolute;
+    background-repeat: no-repeat;
+    top: -78px;
+    left: -200px;
+    display: block;
+    background-size: 225px auto;
+    opacity: 0.8;
+}
+
+
+/* Следы от пуль */
+
+.bullet-marks {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: url(../image/bullet.png) center bottom/50px auto no-repeat;
+    cursor: url("../image/aim_red_32x32.png") 16 16, pointer;
+    /* Добавил курсор */
+}
+
+@keyframes leave {
+    from {
+        width: 100px;
+        height: 100px;
+    }
+    to {
+        width: 0px;
+        height: 0px;
+    }
+}
+
+/* ==================
+     Начало игры
+================== */
+
+.start-game-caption {
+    width: 1200px;
+    /* height: 80px; */
+    background-color: transparent;
+    font-size: 130px;
+    line-height: 1em;
+    color: rgba(236, 38, 3, 0.3);
+    position: relative;
+    top: 250px;
+    margin: 0 auto;
+    text-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, rgba(255, 255, 255, 0.7) 0px 0px 10px, rgba(255, 255, 255, 0.7) 0px 0px 15px, #ff4810b3 0px 0px 20px, #ff4810b3 0px 0px 30px, #ff4810b3 0px 0px 40px, #ff4810b3 0px 0px 50px, #ff4810b3 0px 0px 75px;
+}
+
+
+/* Блок старта игры */
+
+#start-game {
+    width: 1200px;
+    height: 650px;
+    background-image: url(../image/start.jpg);
+    background-repeat: no-repeat;
+    padding-top: 25px;
+    cursor: url("../image/aim_red_32x32.png") 16 16, pointer;
+    /* Добавил курсор */
+}
+
+
+/* =============
+     Кнопки  
+============= */
+
+
+/* Блок кнопок на стартовом экране */
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-size: 1200px 650px;
+}
+
+
+/* Наследуемые стили кнопок на стартовом экране и экране окончания игры,
+  а также таймера и счёта */
+
+#start-button,
+#customization-button,
+#restart-button,
+#return-button,
+.modal-confirm,
+.timer,
+.count {
+    position: relative;
+    min-width: 360px;
+    min-height: 60px;
+    background: rgba(145, 44, 44, 0.6);
+    font-weight: normal;
+    border: none;
+    border-radius: 100px;
+    color: #bbe37b;
+    cursor: url("../image/aim_red_32x32.png") 16 16, pointer;
+    outline: none;
+}
+
+
+/* Кнопка "Start" */
+
+#start-button {
+    font-size: 40px;
+    margin-bottom: 25px;
+    color: #000;
+    font-weight: 400;
+    text-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, rgba(255, 255, 255, 0.7) 0px 0px 10px, rgba(255, 255, 255, 0.7) 0px 0px 15px, #ff2d95b3 0px 0px 20px, #ff2d95b3 0px 0px 30px, #ff2d95b3 0px 0px 40px, #ff2d95b3 0px 0px 50px, #ff2d95b3 0px 0px 75px;
+}
+
+
+/* Кнопка "Settings" */
+
+#customization-button {
+    background: rgba(115, 84, 84, 0.6);
+    color: #000;
+    font-weight: 400;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7), 0 0 10px rgba(255, 255, 255, 0.7), 0 0 15px rgba(255, 255, 255, 0.7), 0 0 20px #49ff18, 0 0 30px #49ff18, 0 0 40px #49ff18, 0 0 55px #49ff18, 0 0 65px #49ff18;
+}
+
+
+/* Блок кнопок на стартовом экране */
+
+#end-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    cursor: url("../image/aim_red_32x32.png") 16 16, pointer;
+}
+
+
+/* Кнопка "Restart" */
+
+#restart-button {
+    font-weight: 400;
+    margin-bottom: 25px;
+    color: #000;
+    text-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, rgba(255, 255, 255, 0.7) 0px 0px 10px, rgba(255, 255, 255, 0.7) 0px 0px 15px, #ff2d95b3 0px 0px 20px, #ff2d95b3 0px 0px 30px, #ff2d95b3 0px 0px 40px, #ff2d95b3 0px 0px 50px, #ff2d95b3 0px 0px 75px;
+}
+
+
+/* Кнопка "Back to menu" */
+
+#return-button {
+    font-size: 26px;
+    background: rgba(115, 84, 84, 0.6);
+    color: #000;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7), 0 0 10px rgba(255, 255, 255, 0.7), 0 0 15px rgba(255, 255, 255, 0.7), 0 0 20px #49ff18, 0 0 30px #49ff18, 0 0 40px #49ff18, 0 0 55px #49ff18, 0 0 65px #49ff18;
+}
+
+
+/* =======================
+     Button animation
+======================= */
+
+
+/* Начало анимации кнопок */
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-red {
+    background-color: rgba(145, 44, 44, 0.6);
+    color: #777;
+}
+
+.btn-grey {
+    background-color: rgba(115, 84, 84, 0.6);
+    color: #777;
+}
+
+.btn::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all 0.5s;
+}
+
+.btn-red::after {
+    background-color: rgba(145, 44, 44, 0.6);
+}
+
+.btn-grey::after {
+    background-color: rgba(115, 84, 84, 0.6);
+}
+
+.btn:hover::after {
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;
+}
+
+.btn-animated {
+    animation: moveInBottom 1s ease-out;
+    animation-fill-mode: backwards;
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+
+/* Конец анимации кнопок */
+
+
+/* ===================
+     Игровое поле
+=================== */
+
+
+/* блок счёта */
+
+.count-div {
+    position: absolute;
+    left: 10px;
+    top: 40px;
+}
+
+
+/* стили текста блока счёта */
+
+.count {
+    min-width: 250px;
+    display: inline;
+    font-size: 18px;
+    padding: 5px 10px;
+    color: rgba(255, 255, 255, 0.7) fff;
+    background: rgba(145, 44, 44, 0.6);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7) fff;
+}
+
+
+/* Таймер на игровом поле */
+
+.timer-div {
+    position: absolute;
+    left: 10px;
+    top: 0px;
+    text-align: left;
+}
+
+
+/* стили текста блока таймера */
+
+.timer {
+    display: inline;
+    font-size: 18px;
+    padding: 5px 10px;
+    /* Эффекты блока таймера */
+    /* Glowing effect */
+    color: rgba(255, 255, 255, 0.7) fff;
+    background: rgba(145, 44, 44, 0.6);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7) #fff;
+}
+
+
+/* =================
+     Конец игры
+================= */
+
+
+/* Надпись "Bang!!! You Win!!! */
+
+.you-win {
+    width: 450px;
+    text-align: center;
+    color: #8d140b;
+    margin-bottom: 10px;
+}
+
+
+/* Надпись "Downed targets" */
+
+.score {
+    width: 450px;
+    text-align: center;
+    color: rgba(115, 84, 84, 0.6);
+}
+
+
+/* ==============================
+     Модальное окно настроек
+============================== */
+
+
+/* Основной блок модального окна */
+
+.modal-block {
+    display: none;
+    background-color: hsla(0, 0%, 0%, 0.5);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+
+/* Кнопка включения отключения звука игры*/
+
+.modal-sound-batton,
+.modal-confirm,
+.modal-box {
+    cursor: url("../image/aim_red_32x32.png") 16 16, pointer;
+}
+
+.modal-box {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 3rem;
+    box-sizing: border-box;
+    background-color: rgba(129, 28, 28, 0.7);
+    cursor: url("../image/aim_red_32x32.png") 16 16, pointer;
+    margin: auto;
+    border-radius: 100px;
+}
+
+
+/*Название модального окна настроек "Settings"*/
+
+.modal-caption {
+    font-weight: 400;
+    margin-bottom: 25px;
+    color: #000;
+    text-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, rgba(255, 255, 255, 0.7) 0px 0px 10px, rgba(255, 255, 255, 0.7) 0px 0px 15px, #ff2d95b3 0px 0px 20px, #ff2d95b3 0px 0px 30px, #ff2d95b3 0px 0px 40px, #ff2d95b3 0px 0px 50px, #ff2d95b3 0px 0px 75px;
+}
+
+
+/* Размещение текстового блока и блока кнопок в ряд */
+
+.modal-text-btn-box {
+    display: flex;
+}
+
+
+/* Стили текста в текстовом блоке */
+
+.modal-text {
+    font-weight: 400;
+    margin-bottom: 15px;
+    margin-right: 20px;
+    text-align: left;
+    text-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, rgba(255, 255, 255, 0.7) 0px 0px 10px, rgba(255, 255, 255, 0.7) 0px 0px 15px, #ff2d95b3 0px 0px 20px, #ff2d95b3 0px 0px 30px, #ff2d95b3 0px 0px 40px, #ff2d95b3 0px 0px 50px, #ff2d95b3 0px 0px 75px;
+}
+
+
+/* Блок с кнопоками "sound" "volume"*/
+
+
+/* Стили для размещения кнопок в столбик */
+
+.modal-button-box {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Кнопка звука*/
+
+.modal-sound-button {
+    background-color: rgba(145, 44, 44, 0.6);
+    width: 54px;
+    height: 54px;
+    border-radius: 54px;
+    border: none;
+    margin: 0 auto 15px;
+    outline: none;
+    box-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, #ff2d95b3 0px 0px 10px, #ff2d95b3 0px 0px 15px;
+}
+
+
+/* Стили кнопки включить и выключить при наведени */
+
+.modal-sound-button:hover {
+    transform: translateY(-3px);
+    box-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, #ff2d95b3 0px 0px 10px, #ff2d95b3 0px 0px 15px;
+}
+
+
+/* Стили кнопки включить и выключить при клике */
+
+.modal-sound-button:active {
+    transform: translateY(-1px);
+    box-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, #ff2d95b3 0px 0px 10px, #ff2d95b3 0px 0px 15px;
+}
+
+
+/* Фоновая картинка кнопки включить */
+
+.sound-on {
+    background-image: url(../image/sound-on.png);
+    background-size: 50px;
+    background-position: center;
+}
+
+
+/* Фоновая картинка кнопки выключить */
+
+.sound-off {
+    background-image: url(../image/sound-off.png);
+    background-size: 50px;
+    background-position: center;
+}
+
+
+/* Стили кнопки "Confirm" */
+
+.modal-confirm {
+    background-color: rgba(145, 44, 44, 0.6);
+    width: 250px;
+    height: 54px;
+    border: none;
+    border-radius: 54px;
+    outline: none;
+    margin: 0 auto;
+    color: #000;
+    text-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, rgba(255, 255, 255, 0.7) 0px 0px 10px, rgba(255, 255, 255, 0.7) 0px 0px 15px, #ff2d95b3 0px 0px 20px, #ff2d95b3 0px 0px 30px, #ff2d95b3 0px 0px 40px, #ff2d95b3 0px 0px 50px, #ff2d95b3 0px 0px 75px;
+    box-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, #ff2d95b3 0px 0px 10px, #ff2d95b3 0px 0px 15px;
+}
+
+
+/* Стили кнопки "Confirm" при наведении */
+
+.modal-confirm:hover {
+    box-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, #ff2d95b3 0px 0px 10px, #ff2d95b3 0px 0px 15px;
+}
+
+
+/* ========================================================
+     Анимация появления и исчезновения модального окна
+======================================================== */
+
+.modal-box-open {
+    animation: moveInBottom 1s ease-out;
+    animation-fill-mode: backwards;
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+
+/*закрытие модального окна*/
+
+.modal-box-close {
+    animation: moveInTop 1s ease;
+    animation-fill-mode: backwards;
+}
+
+@keyframes moveInTop {
+    0% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+}
+
+
+/* ==========================
+     Стилизация ползунка
+========================== */
+
+input[type="range"] {
+    -webkit-appearance: none;
+    /* Hides the slider so that custom slider can be made */
+    width: 100%;
+    /* Specific width is required for Firefox. */
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+    cursor: url("../image/aim_red_32x32.png") 16 16, pointer;
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 54px;
+    background: rgba(145, 44, 44, 0.6);
+    border-radius: 54px;
+    border: 0.2px solid #ff2d95b3;
+    box-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, #ff2d95b3 0px 0px 10px, #ff2d95b3 0px 0px 15px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #ff2d95b3;
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+    background: rgba(145, 44, 44, 0.6);
+    margin-top: 1px;
+    box-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, #ff2d95b3 0px 0px 10px, #ff2d95b3 0px 0px 15px;
+}
+
+.target-shot {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+}
+
+
+/* Подпись-Деньги за выстрел*/
+
+.target-shot-text {
+    position: absolute;
+    font-weight: 400;
+    font-size: 32px;
+    background-color: transparent;
+    color: #000;
+    text-shadow: rgba(255, 255, 255, 0.7) 0px 0px 5px, #ff2d95b3 0px 0px 10px, #ff2d95b3 0px 0px 15px;
+}
+
+.target-shot-text {
+    animation: moveInBottom 1s ease-out;
+    animation-fill-mode: backwards;
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
